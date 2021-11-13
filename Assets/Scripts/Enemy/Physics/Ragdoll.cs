@@ -4,7 +4,9 @@ using System.Linq;
 using System;
 using Random = UnityEngine.Random;
 using Object = UnityEngine.Object;
+#if UNITY_EDITOR
 using UnityEditor;
+#endif
 
 namespace Enemy.Physics
 {
@@ -65,6 +67,7 @@ namespace Enemy.Physics
 
     }
 
+#if UNITY_EDITOR
     [CustomEditor(typeof(Ragdoll))]
     public class RagdollEditor : UnityEditor.Editor
     {
@@ -79,4 +82,5 @@ namespace Enemy.Physics
 
         }
     }
+#endif
 }
