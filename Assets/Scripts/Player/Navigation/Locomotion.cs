@@ -32,17 +32,25 @@ namespace Player.Navigation
 
         public void Move()
         {
-            var destination = NextWayPoint().Position;
-            _navAgent.SetDestination(destination);
-            _animator.Play("run");
-            StartCoroutine(WaitDestionationReachedCoroutine());
+            var waypoint = NextWayPoint();
+            if (waypoint != null)
+            {
+                var destination = waypoint.Position;
+                _navAgent.SetDestination(destination);
+                _animator.Play("run");
+                StartCoroutine(WaitDestionationReachedCoroutine());
+            }
         }
 
         private Waypoint NextWayPoint()
         {
-            var waypoint = _waypoints[_nextWaypointIndx];
-            _nextWaypointIndx++;
-            return waypoint;
+            if (_nextWaypointIndx < _waypoints.Length)
+            {
+                var waypoint = _waypoints[_nextWaypointIndx];
+                _nextWaypointIndx++;
+                return waypoint;
+            }
+            return null;
         }
 
         private IEnumerator WaitDestionationReachedCoroutine()

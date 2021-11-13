@@ -5,28 +5,51 @@ using System;
 using Random = UnityEngine.Random;
 using Object = UnityEngine.Object;
 
-public class Bullet : MonoBehaviour
+namespace Player.Shooting
 {
-    [SerializeField]
-    private bool _fire;
-    [SerializeField]
-    private float _speed;
-
-    public void Fire()
+    public class Bullet : MonoBehaviour
     {
-        _fire = true;
-    }
+        [SerializeField]
+        private bool _fire;
+        [SerializeField]
+        private float _speed;
+        [SerializeField]
+        private float _damage;
+        private bool _hit;
+        private BulletsPool _bulletsPool;
 
-    internal void Update()
-    {
-        if (_fire)
+        internal void Awake()
         {
-            transform.position = Vector3.Lerp(transform.position, transform.position + transform.forward * _speed * Time.deltaTime, Time.deltaTime);
+            _bulletsPool = FindObjectOfType<BulletsPool>();
         }
-    }
 
-    internal void OnTriggerEnter(Collider other)
-    {
-        Debug.Log($"Shot: {other.gameObject.name}", other.gameObject);
+        public void Fire()
+        {
+            _fire = true;
+        }
+
+        internal void Update()
+        {
+            if (_fire)
+            {
+                transform.position +=  transform.forward * _speed * Time.deltaTime;
+            }
+        }
+
+        internal void OnTriggerEnter(Collider other)
+        {
+            if (!_hit)
+            {
+                _hit = true;
+                var shootable = other.GetComponentInParent<ISHootable>();
+                if (shootable != null)
+                {
+                    shootable.OnShot(_damage, transform.forward);
+                }
+                gameObject.SetActive(false);
+                _bulletsPool.Add(this);
+                _hit = false;
+            }
+        }
     }
 }
