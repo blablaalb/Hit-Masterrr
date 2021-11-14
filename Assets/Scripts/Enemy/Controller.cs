@@ -66,12 +66,16 @@ namespace Enemy
             {
                 OnShot(damage);
                 Utils.Instance.RandomizeSeed();
-                float multiplier = Random.Range(-1f, 1f);
+                float multiplier = Random.Range(-1, 1);
                 Utils.Instance.RandomizeSeed();
-                direction.x = Random.Range(-1f, 1f);
+                direction.x = Random.Range(-1, 2);
                 direction.y *= multiplier;
                 Utils.Instance.RandomizeSeed();
-                if (!_alive) _ragdoll.AddForce(direction * Random.Range(90, 130));
+                direction.z = Random.Range(-1, 1);
+                Utils.Instance.RandomizeSeed();
+                direction.x *= Random.Range(50,100 );
+                direction.y *= Random.Range(90, 130);
+                if (!_alive) _ragdoll.AddForce(direction);
             }
         }
 

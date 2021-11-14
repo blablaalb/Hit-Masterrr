@@ -69,5 +69,10 @@ namespace Player.Navigation
         {
             _animator.CrossFade("pistol-idle", 0.7f);
         }
+
+        public void Dance()
+        {
+            _animator.CrossFade("robot-hip-hip-dance", 0.7f);
+        }
     }
 }
